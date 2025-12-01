@@ -10,13 +10,13 @@ struct Cli {
     day: u8,
 }
 
-fn main() {
+fn main() -> Result<(), Box<dyn std::error::Error>> {
     let cli = Cli::parse();
     
     println!("🎄 Advent of Code 2025 - Day {} 🎄\n", cli.day);
     
     match cli.day {
-        1 => days::day01::run(),
+        1 => days::day01::run()?,
         2 => days::day02::run(),
         3 => days::day03::run(),
         4 => days::day04::run(),
@@ -30,4 +30,6 @@ fn main() {
         12 => days::day12::run(),
         _ => unreachable!("clap should prevent this"),
     }
+    
+    Ok(())
 }
