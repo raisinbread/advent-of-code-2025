@@ -1,0 +1,10 @@
+{
+    "rust-analyzer.checkOnSave": {
+        "enable": true,
+        "command": "clippy"
+    },
+    "rust-analyzer.inlayHints.typeHints.enable": true,
+    "rust-analyzer.inlayHints.parameterHints.enable": true
+}
+
+

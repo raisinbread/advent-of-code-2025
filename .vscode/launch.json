@@ -1,0 +1,258 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Day 1",
+      "type": "lldb",
+      "request": "launch",
+      "cargo": {
+        "args": ["build", "--bin=advent-of-code-2025"]
+      },
+      "args": ["1"],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Debug Day 2",
+      "type": "lldb",
+      "request": "launch",
+      "cargo": {
+        "args": ["build", "--bin=advent-of-code-2025"]
+      },
+      "args": ["2"],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Debug Day 3",
+      "type": "lldb",
+      "request": "launch",
+      "cargo": {
+        "args": ["build", "--bin=advent-of-code-2025"]
+      },
+      "args": ["3"],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Debug Day 4",
+      "type": "lldb",
+      "request": "launch",
+      "cargo": {
+        "args": ["build", "--bin=advent-of-code-2025"]
+      },
+      "args": ["4"],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Debug Day 5",
+      "type": "lldb",
+      "request": "launch",
+      "cargo": {
+        "args": ["build", "--bin=advent-of-code-2025"]
+      },
+      "args": ["5"],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Debug Day 6",
+      "type": "lldb",
+      "request": "launch",
+      "cargo": {
+        "args": ["build", "--bin=advent-of-code-2025"]
+      },
+      "args": ["6"],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Debug Day 7",
+      "type": "lldb",
+      "request": "launch",
+      "cargo": {
+        "args": ["build", "--bin=advent-of-code-2025"]
+      },
+      "args": ["7"],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Debug Day 8",
+      "type": "lldb",
+      "request": "launch",
+      "cargo": {
+        "args": ["build", "--bin=advent-of-code-2025"]
+      },
+      "args": ["8"],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Debug Day 9",
+      "type": "lldb",
+      "request": "launch",
+      "cargo": {
+        "args": ["build", "--bin=advent-of-code-2025"]
+      },
+      "args": ["9"],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Debug Day 10",
+      "type": "lldb",
+      "request": "launch",
+      "cargo": {
+        "args": ["build", "--bin=advent-of-code-2025"]
+      },
+      "args": ["10"],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Debug Day 11",
+      "type": "lldb",
+      "request": "launch",
+      "cargo": {
+        "args": ["build", "--bin=advent-of-code-2025"]
+      },
+      "args": ["11"],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Debug Day 12",
+      "type": "lldb",
+      "request": "launch",
+      "cargo": {
+        "args": ["build", "--bin=advent-of-code-2025"]
+      },
+      "args": ["12"],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Debug Day 13",
+      "type": "lldb",
+      "request": "launch",
+      "cargo": {
+        "args": ["build", "--bin=advent-of-code-2025"]
+      },
+      "args": ["13"],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Debug Day 14",
+      "type": "lldb",
+      "request": "launch",
+      "cargo": {
+        "args": ["build", "--bin=advent-of-code-2025"]
+      },
+      "args": ["14"],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Debug Day 15",
+      "type": "lldb",
+      "request": "launch",
+      "cargo": {
+        "args": ["build", "--bin=advent-of-code-2025"]
+      },
+      "args": ["15"],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Debug Day 16",
+      "type": "lldb",
+      "request": "launch",
+      "cargo": {
+        "args": ["build", "--bin=advent-of-code-2025"]
+      },
+      "args": ["16"],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Debug Day 17",
+      "type": "lldb",
+      "request": "launch",
+      "cargo": {
+        "args": ["build", "--bin=advent-of-code-2025"]
+      },
+      "args": ["17"],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Debug Day 18",
+      "type": "lldb",
+      "request": "launch",
+      "cargo": {
+        "args": ["build", "--bin=advent-of-code-2025"]
+      },
+      "args": ["18"],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Debug Day 19",
+      "type": "lldb",
+      "request": "launch",
+      "cargo": {
+        "args": ["build", "--bin=advent-of-code-2025"]
+      },
+      "args": ["19"],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Debug Day 20",
+      "type": "lldb",
+      "request": "launch",
+      "cargo": {
+        "args": ["build", "--bin=advent-of-code-2025"]
+      },
+      "args": ["20"],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Debug Day 21",
+      "type": "lldb",
+      "request": "launch",
+      "cargo": {
+        "args": ["build", "--bin=advent-of-code-2025"]
+      },
+      "args": ["21"],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Debug Day 22",
+      "type": "lldb",
+      "request": "launch",
+      "cargo": {
+        "args": ["build", "--bin=advent-of-code-2025"]
+      },
+      "args": ["22"],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Debug Day 23",
+      "type": "lldb",
+      "request": "launch",
+      "cargo": {
+        "args": ["build", "--bin=advent-of-code-2025"]
+      },
+      "args": ["23"],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Debug Day 24",
+      "type": "lldb",
+      "request": "launch",
+      "cargo": {
+        "args": ["build", "--bin=advent-of-code-2025"]
+      },
+      "args": ["24"],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Debug Day 25",
+      "type": "lldb",
+      "request": "launch",
+      "cargo": {
+        "args": ["build", "--bin=advent-of-code-2025"]
+      },
+      "args": ["25"],
+      "cwd": "${workspaceFolder}"
+    }
+  ]
+}
