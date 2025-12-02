@@ -68,28 +68,16 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
     let ranges = parse_ranges(input.trim())?;
 
     let do_exactly_twice = false;
+    let repeat_mode = if do_exactly_twice { RepeatMode::ExactlyTwice } else { RepeatMode::AnyCount };
 
-    if do_exactly_twice {
-        let mut double_repeat_invalid_ids: Vec<u128> = Vec::new();
-        for range in ranges {
-            let invalid_ids = find_invalid_ids_in_range(range, RepeatMode::ExactlyTwice)?;
-            double_repeat_invalid_ids.extend(invalid_ids);
-        }
-
-        let sum: u128 = double_repeat_invalid_ids.iter().sum();
-        println!("{:?}", double_repeat_invalid_ids);
-        println!("Sum: {}", sum);
-    } else {
-        let mut any_repeat_invalid_ids: Vec<u128> = Vec::new();
-        for range in ranges {
-            let invalid_ids = find_invalid_ids_in_range(range, RepeatMode::AnyCount)?;
-            any_repeat_invalid_ids.extend(invalid_ids);
-        }
-
-        let sum: u128 = any_repeat_invalid_ids.iter().sum();
-        println!("{:?}", any_repeat_invalid_ids);
-        println!("Sum: {}", sum);
+    let mut invalid_ids: Vec<u128> = Vec::new();
+    for range in ranges {
+        invalid_ids.extend(find_invalid_ids_in_range(range, repeat_mode)?);
     }
+
+    let sum: u128 = invalid_ids.iter().sum();
+    println!("{:?}", invalid_ids);
+    println!("Sum: {}", sum);
 
     Ok(())
 }
