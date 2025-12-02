@@ -17,7 +17,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     
     match cli.day {
         1 => days::day01::run()?,
-        2 => days::day02::run(),
+        2 => days::day02::run()?,
         3 => days::day03::run(),
         4 => days::day04::run(),
         5 => days::day05::run(),
