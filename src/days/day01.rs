@@ -93,16 +93,69 @@ fn parse_turn(line: &str) -> Result<(Direction, i32), Box<dyn std::error::Error>
 pub fn run() -> Result<(), Box<dyn std::error::Error>> {
     let mut safe = Safe::new();
     let turns = std::fs::read_to_string("assets/day01turns.txt")?;
-    
+
     for turn in turns.lines() {
         let (direction, amount) = parse_turn(turn)?;
         safe.rotate(amount, direction);
     }
-    
+
     println!("Safe value: {}", safe.dial_value);
     println!("Zero hits: {}", safe.stops_on_zero);
     println!("Zero visits: {}", safe.visits_zero);
-    
+
     Ok(())
 }
 
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_parse_turn_left() {
+        let (dir, amt) = parse_turn("L5").unwrap();
+        assert_eq!(amt, 5);
+        matches!(dir, Direction::Left);
+    }
+
+    #[test]
+    fn test_parse_turn_right() {
+        let (dir, amt) = parse_turn("R10").unwrap();
+        assert_eq!(amt, 10);
+        matches!(dir, Direction::Right);
+    }
+    
+    #[test]
+    fn test_rotate_right_simple() {
+        let mut safe = Safe::new();
+        safe.rotate(10, Direction::Right);
+        assert_eq!(safe.dial_value, 60);
+    }
+
+    #[test]
+    fn test_rotate_left_simple() {
+        let mut safe = Safe::new();
+        safe.rotate(10, Direction::Left);
+        assert_eq!(safe.dial_value, 40);
+    }
+
+    #[test]
+    fn test_rotate_wraps_around() {
+        let mut safe = Safe::new();
+        safe.rotate(60, Direction::Right); // 50 + 60 = 110, wraps to 10
+        assert_eq!(safe.dial_value, 10);
+    }
+
+    #[test]
+    fn test_full_solution_visits_zero() {
+        let mut safe = Safe::new();
+        let turns = std::fs::read_to_string("assets/day01turns.txt")
+            .expect("Failed to read input file");
+
+        for turn in turns.lines() {
+            let (direction, amount) = parse_turn(turn).unwrap();
+            safe.rotate(amount, direction);
+        }
+
+        assert_eq!(safe.visits_zero, 6789);
+    }
+}

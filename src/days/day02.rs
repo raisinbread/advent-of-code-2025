@@ -82,3 +82,66 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_parse_ranges() {
+        let ranges = parse_ranges("10-20,30-40").unwrap();
+        assert_eq!(ranges, vec![("10", "20"), ("30", "40")]);
+    }
+
+    #[test]
+    fn test_is_invalid_id_exactly_twice() {
+        // 1212 = "12" repeated twice
+        assert!(is_invalid_id(1212, RepeatMode::ExactlyTwice));
+        // 123123 = "123" repeated twice
+        assert!(is_invalid_id(123123, RepeatMode::ExactlyTwice));
+
+        // 123 - odd length, can't be exactly twice
+        assert!(!is_invalid_id(123, RepeatMode::ExactlyTwice));
+        // 1234 - not a repeat
+        assert!(!is_invalid_id(1234, RepeatMode::ExactlyTwice));
+        // 121212 - repeated 3 times, not exactly twice
+        assert!(!is_invalid_id(121212, RepeatMode::ExactlyTwice));
+    }
+
+    #[test]
+    fn test_is_invalid_id_any_count() {
+        // 1212 = "12" repeated twice
+        assert!(is_invalid_id(1212, RepeatMode::AnyCount));
+        // 121212 = "12" repeated three times
+        assert!(is_invalid_id(121212, RepeatMode::AnyCount));
+        // 777 = "7" repeated three times
+        assert!(is_invalid_id(777, RepeatMode::AnyCount));
+
+        assert!(!is_invalid_id(1234, RepeatMode::AnyCount));
+        assert!(!is_invalid_id(123, RepeatMode::AnyCount));
+    }
+
+    #[test]
+    fn test_find_invalid_ids_in_range() {
+        // Range 11-13 with AnyCount should find 11, 12 (no, 12 isn't repeating), 13 (no)
+        // Actually 11 = "11" = "1" repeated twice
+        let ids = find_invalid_ids_in_range(("11", "13"), RepeatMode::AnyCount).unwrap();
+        assert!(ids.contains(&11));
+        assert!(!ids.contains(&12));
+        assert!(!ids.contains(&13));
+    }
+
+    #[test]
+    fn test_full_solution_sum() {
+        let input = std::fs::read_to_string("assets/day02ranges.txt")
+            .expect("Failed to read input file");
+        let ranges = parse_ranges(input.trim()).unwrap();
+
+        let mut invalid_ids: Vec<u128> = Vec::new();
+        for range in ranges {
+            invalid_ids.extend(find_invalid_ids_in_range(range, RepeatMode::AnyCount).unwrap());
+        }
+
+        let sum: u128 = invalid_ids.iter().sum();
+        assert_eq!(sum, 22471660255);
+    }
+}
