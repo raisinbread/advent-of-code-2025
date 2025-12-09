@@ -23,7 +23,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         5 => days::day05::run()?,
         6 => days::day06::run()?,
         7 => days::day07::run()?,
-        8 => days::day08::run(),
+        8 => days::day08::run()?,
         9 => days::day09::run(),
         10 => days::day10::run(),
         11 => days::day11::run(),
