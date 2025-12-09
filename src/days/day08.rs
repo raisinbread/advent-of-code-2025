@@ -64,16 +64,16 @@ impl PartialEq for PairDistance {
 
 impl Eq for PairDistance {}
 
-impl PartialOrd for PairDistance {
-    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+impl Ord for PairDistance {
+    fn cmp(&self, other: &Self) -> Ordering {
         // Reverse ordering for min-heap
-        other.distance.partial_cmp(&self.distance)
+        other.distance.partial_cmp(&self.distance).unwrap_or(Ordering::Equal)
     }
 }
 
-impl Ord for PairDistance {
-    fn cmp(&self, other: &Self) -> Ordering {
-        self.partial_cmp(other).unwrap_or(Ordering::Equal)
+impl PartialOrd for PairDistance {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.cmp(other))
     }
 }
 
@@ -231,14 +231,124 @@ fn create_clusters(coordinates: &[Coordinate3D], num_connections: usize) -> (Vec
     (cluster_sizes, product)
 }
 
+fn connect_until_single_cluster(coordinates: &[Coordinate3D]) -> Result<i64> {
+    let n = coordinates.len();
+    
+    println!("Connecting all {} coordinates into a single circuit...", n);
+    println!("Computing all pairwise distances...");
+    
+    // Min-heap to efficiently get the closest pair
+    let mut heap: BinaryHeap<PairDistance> = BinaryHeap::new();
+    
+    // Compute all pairwise distances and add to heap
+    for i in 0..n {
+        if n >= 100 && i % 100 == 0 {
+            println!("  Processing coordinate {} of {}...", i, n);
+        }
+        for j in (i + 1)..n {
+            let distance = euclidean_distance(&coordinates[i], &coordinates[j]);
+            heap.push(PairDistance { distance, i, j });
+        }
+    }
+    
+    // Track which pairs are directly connected
+    let mut connected_pairs: HashSet<(usize, usize)> = HashSet::new();
+    
+    // Track which cluster each coordinate belongs to
+    let mut coordinate_to_cluster: HashMap<usize, usize> = HashMap::new();
+    
+    // Track clusters as sets of coordinate indices
+    let mut clusters: Vec<HashSet<usize>> = Vec::new();
+    
+    // Initialize: each coordinate starts in its own cluster
+    for i in 0..n {
+        let mut singleton = HashSet::new();
+        singleton.insert(i);
+        clusters.push(singleton);
+        coordinate_to_cluster.insert(i, i);
+    }
+    
+    let mut connections_made = 0;
+    let mut last_connected_pair: Option<(usize, usize)> = None;
+    
+    // Count how many non-empty clusters we have
+    let mut num_clusters = n;
+    
+    println!("Starting with {} circuits...", num_clusters);
+    
+    // Continue until we have only 1 cluster
+    while num_clusters > 1 {
+        // Pop pairs from heap until we find one that's not already connected
+        let closest_pair = loop {
+            if let Some(pair) = heap.pop() {
+                let key = if pair.i < pair.j { (pair.i, pair.j) } else { (pair.j, pair.i) };
+                
+                if !connected_pairs.contains(&key) {
+                    break Some((pair.i, pair.j));
+                }
+                // Otherwise, this pair was already connected, skip it
+            } else {
+                return Err(anyhow!("Ran out of pairs before forming single cluster"));
+            }
+        };
+        
+        // If we found a pair, connect them
+        if let Some((i, j)) = closest_pair {
+            let key = if i < j { (i, j) } else { (j, i) };
+            connected_pairs.insert(key);
+            connections_made += 1;
+            last_connected_pair = Some((i, j));
+            
+            if n >= 100 && connections_made % 100 == 0 {
+                println!("  Made {} connections, {} circuits remaining...", 
+                         connections_made, num_clusters);
+            }
+            
+            let cluster_i = coordinate_to_cluster[&i];
+            let cluster_j = coordinate_to_cluster[&j];
+            
+            if cluster_i != cluster_j {
+                // Merge the two clusters
+                let cluster_j_members: Vec<usize> = clusters[cluster_j].iter().copied().collect();
+                for member in cluster_j_members {
+                    clusters[cluster_i].insert(member);
+                    coordinate_to_cluster.insert(member, cluster_i);
+                }
+                clusters[cluster_j].clear();
+                num_clusters -= 1; // We merged two clusters into one
+            }
+            // else: both already in same cluster, connection just adds redundancy
+        }
+    }
+    
+    println!("\nAll junction boxes connected into a single circuit!");
+    println!("Total connections made: {}", connections_made);
+    
+    if let Some((i, j)) = last_connected_pair {
+        let x_product = (coordinates[i].x as i64) * (coordinates[j].x as i64);
+        println!("\nLast connection: junction box {} (x={}) <-> junction box {} (x={})",
+                 i, coordinates[i].x, j, coordinates[j].x);
+        println!("Product of X coordinates: {} * {} = {}", 
+                 coordinates[i].x, coordinates[j].x, x_product);
+        Ok(x_product)
+    } else {
+        Err(anyhow!("No connections were made"))
+    }
+}
+
 /// Day 8: Playground - Junction Box Circuit Analysis
 pub fn run() -> Result<()> {
     let coordinates = parse_input("assets/day08coordinates.txt")?;
     
     println!("Day 8: Loaded {} coordinates", coordinates.len());
     
-    // Connect 1000 closest pairs for the full puzzle
+    // Part 1: Connect 1000 closest pairs for the full puzzle
+    println!("\n=== Part 1: Limited Connections ===");
     create_clusters(&coordinates, 1000);
+    
+    // Part 2: Connect until all are in a single circuit
+    println!("\n=== Part 2: Single Circuit ===");
+    connect_until_single_cluster(&coordinates)?;
     
     Ok(())
 }
@@ -283,5 +393,37 @@ mod tests {
         assert_eq!(cluster_sizes[1], 37, "Second largest circuit should have 37 junction boxes");
         assert_eq!(cluster_sizes[2], 32, "Third largest circuit should have 32 junction boxes");
         assert_eq!(product, 67488, "Product of three largest circuits should be 67488");
+    }
+
+    #[test]
+    fn test_single_cluster_example() {
+        // Load the example data (20 junction boxes)
+        let coordinates = parse_input("assets/day08example.txt")
+            .expect("Failed to load example data");
+        
+        assert_eq!(coordinates.len(), 20, "Example should have 20 junction boxes");
+        
+        // Connect until all are in a single circuit (requires 19 connections)
+        let x_product = connect_until_single_cluster(&coordinates)
+            .expect("Failed to create single cluster");
+        
+        // The answer will depend on the data, just verify we got a result
+        assert!(x_product > 0, "Product should be positive");
+    }
+
+    #[test]
+    fn test_single_cluster_full_puzzle() {
+        // Load the full puzzle data (1000 junction boxes)
+        let coordinates = parse_input("assets/day08coordinates.txt")
+            .expect("Failed to load full puzzle data");
+        
+        assert_eq!(coordinates.len(), 1000, "Full puzzle should have 1000 junction boxes");
+        
+        // Connect until all are in a single circuit (requires 6282 connections)
+        let x_product = connect_until_single_cluster(&coordinates)
+            .expect("Failed to create single cluster");
+        
+        // The answer is the product of X coordinates of the last two connected junction boxes
+        assert_eq!(x_product, 3767453340, "Product of X coordinates should be 3767453340");
     }
 }
