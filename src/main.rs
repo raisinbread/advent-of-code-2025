@@ -25,7 +25,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         7 => days::day07::run()?,
         8 => days::day08::run()?,
         9 => days::day09::run()?,
-        10 => days::day10::run(),
+        10 => days::day10::run()?,
         11 => days::day11::run(),
         12 => days::day12::run(),
         _ => unreachable!("clap should prevent this"),

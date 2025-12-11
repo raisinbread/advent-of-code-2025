@@ -23,3 +23,6 @@ To run all day 8 tests:
 
 To run the full solution:
     cargo run --release 8
+
+
+
