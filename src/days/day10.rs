@@ -75,6 +75,7 @@ fn parse_input(filename: &str) -> Result<Vec<Machine>> {
 
     let machines: Vec<Machine> = content
         .lines()
+        .filter(|line| !line.trim().is_empty())
         .enumerate()
         .map(|(i, line)| {
             let line = line.trim();

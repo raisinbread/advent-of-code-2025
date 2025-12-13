@@ -13,31 +13,32 @@ pub struct Coordinate3D {
 fn parse_input(filename: &str) -> Result<Vec<Coordinate3D>> {
     let content = fs::read_to_string(filename)
         .context(format!("Failed to read file: {}", filename))?;
-    
+
     let coordinates = content
         .lines()
+        .filter(|line| !line.trim().is_empty())
         .enumerate()
         .map(|(i, line)| {
             let parts: Vec<&str> = line.trim().split(',').collect();
             if parts.len() != 3 {
                 return Err(anyhow!(
-                    "Line {} has {} values, expected 3 comma-separated values", 
-                    i + 1, 
+                    "Line {} has {} values, expected 3 comma-separated values",
+                    i + 1,
                     parts.len()
                 ));
             }
-            
+
             let x = parts[0].parse::<i32>()
                 .context(format!("Failed to parse x coordinate on line {}", i + 1))?;
             let y = parts[1].parse::<i32>()
                 .context(format!("Failed to parse y coordinate on line {}", i + 1))?;
             let z = parts[2].parse::<i32>()
                 .context(format!("Failed to parse z coordinate on line {}", i + 1))?;
-            
+
             Ok(Coordinate3D { x, y, z })
         })
         .collect::<Result<Vec<_>>>()?;
-    
+
     Ok(coordinates)
 }
 

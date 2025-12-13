@@ -46,6 +46,7 @@ fn parse_input(file_path: &str) -> Result<Vec<Vec<Cell>>> {
     let contents = std::fs::read_to_string(file_path)?;
     contents
         .lines()
+        .filter(|line| !line.trim().is_empty())
         .map(|line| {
             line.chars()
                 .map(Cell::from_char)

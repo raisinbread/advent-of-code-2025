@@ -31,7 +31,7 @@ impl Operator {
 
 fn parse_input(filename: &str) -> Result<(Vec<Vec<i64>>, Vec<Operator>)> {
     let content = fs::read_to_string(filename)?;
-    let lines: Vec<&str> = content.lines().collect();
+    let lines: Vec<&str> = content.lines().filter(|line| !line.trim().is_empty()).collect();
     
     if lines.is_empty() {
         return Err(anyhow!("Input file is empty"));
@@ -59,7 +59,7 @@ fn parse_input(filename: &str) -> Result<(Vec<Vec<i64>>, Vec<Operator>)> {
 
 fn parse_input_col(filename: &str) -> Result<(Vec<Vec<Vec<char>>>, Vec<Operator>)> {
     let content = fs::read_to_string(filename)?;
-    let lines: Vec<&str> = content.lines().collect();
+    let lines: Vec<&str> = content.lines().filter(|line| !line.trim().is_empty()).collect();
     
     if lines.len() < 2 {
         return Err(anyhow!("Input file must have at least 2 lines"));

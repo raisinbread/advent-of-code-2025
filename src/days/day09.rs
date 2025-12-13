@@ -14,6 +14,7 @@ fn parse_input(filename: &str) -> Result<Vec<Coordinate>> {
     // Parse all coordinates
     let coordinates: Vec<Coordinate> = content
         .lines()
+        .filter(|line| !line.trim().is_empty())
         .enumerate()
         .map(|(i, line)| {
             let parts: Vec<&str> = line.trim().split(',').collect();

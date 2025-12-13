@@ -1,6 +1,5 @@
 use clap::Parser;
-
-mod days;
+use advent_of_code_2025::days;
 
 #[derive(Parser)]
 #[command(name = "Advent of Code 2025")]
@@ -27,7 +26,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         9 => days::day09::run()?,
         10 => days::day10::run()?,
         11 => days::day11::run()?,
-        12 => days::day12::run(),
+        12 => days::day12::run()?,
         _ => unreachable!("clap should prevent this"),
     }
     
